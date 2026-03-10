@@ -3,13 +3,23 @@ import serial
 import time
 from .nmea_parser import parse_gga
 
-#shared data state, message are compared to eachother from each source
+# shared state, this synchronizes messages from each source
 state = {
-    "usb": {"data": None, "last_time": None},
-    "eth": {"data": None, "last_time": None}
+    "usb": {
+        "data": None,          # last parsed data
+        "last_time": None,     # last message timestamp
+        "msg_count": 0,        # messages received
+        "corrupt_count": 0     # messages that are corrupted / incomplete
+    },
+    "eth": {
+        "data": None,
+        "last_time": None,
+        "msg_count": 0,
+        "corrupt_count": 0
+    }
 }
 
-#read ethernet port data
+# read ethernet port data
 def read_eth():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect(("127.0.0.1", 10110))
@@ -20,16 +30,22 @@ def read_eth():
         if not line:
             continue
         line = line.strip()
-        data = parse_gga(line)
-        if data:
-            # update the shared state
-            state["eth"]["data"] = data
-            state["eth"]["last_time"] = time.time()
-            # print for debugging
-            print("ETH sat:", data["satellites"], "fix:", data["fix"])
-            
 
-#read usb port data
+        if line.startswith("$GP"):
+            data = parse_gga(line)
+            if data:
+
+                # update state
+                state["eth"]["data"] = data
+                state["eth"]["last_time"] = time.time()
+                state["eth"]["msg_count"] += 1
+                print("ETH sat:", data["satellites"], "fix:", data["fix"])
+            else:
+                state["eth"]["corrupt_count"] += 1
+        else:
+            state["eth"]["corrupt_count"] += 1
+
+# read usb port data
 def read_usb():
     ser = serial.Serial("/dev/ttyUSB0", 4800, timeout=1)
     while True:
@@ -37,10 +53,17 @@ def read_usb():
         if not line:
             continue
         line = line.strip()
-        data = parse_gga(line)
-        if data:
-            # update the shared state
-            state["usb"]["data"] = data
-            state["usb"]["last_time"] = time.time()
-            #print for debugging
-            print("USB sat:", data["satellites"], "fix:", data["fix"])
+
+        if line.startswith("$GP"):
+            data = parse_gga(line)
+            if data:
+
+                # update state
+                state["usb"]["data"] = data
+                state["usb"]["last_time"] = time.time()
+                state["usb"]["msg_count"] += 1
+                print("USB sat:", data["satellites"], "fix:", data["fix"])
+            else:
+                state["usb"]["corrupt_count"] += 1
+        else:
+            state["usb"]["corrupt_count"] += 1
