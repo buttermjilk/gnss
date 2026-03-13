@@ -1,6 +1,6 @@
 import threading
 from .receivers import read_eth, read_usb
-from .monitoring import run_monitor
+from .monitor_runner import run_monitor
 
 #main program that orchestrates the threads
 

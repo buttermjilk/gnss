@@ -1,7 +1,7 @@
 import socket
 import serial
 import time
-from .nmea_parser import parse_gga
+from ..helpers.nmea_parser import parse_gga
 
 # shared state, this synchronizes messages from each source
 state = {
