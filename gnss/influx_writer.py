@@ -32,6 +32,8 @@ def push_metrics(state, interval=3):
             .tag("receiver", r)
             .field("satellites", data["satellites"])
             .field("fix", data["fix"])
+            .field("hdop", data["hdop"])
+            .field("time", data["time"])
             .field("message_rate", msg_rate)
             .field("corrupt_ratio", corrupt_ratio)
             .time(int(now * 1e9))

@@ -39,7 +39,7 @@ def read_eth():
                 state["eth"]["data"] = data
                 state["eth"]["last_time"] = time.time()
                 state["eth"]["msg_count"] += 1
-                print("ETH sat:", data["satellites"], "fix:", data["fix"])
+                print("ETH sat:", data["satellites"], "fix:", data["fix"], "hdop:", data['hdop'], "time:", data['time'])
             else:
                 state["eth"]["corrupt_count"] += 1
         else:
@@ -62,7 +62,7 @@ def read_usb():
                 state["usb"]["data"] = data
                 state["usb"]["last_time"] = time.time()
                 state["usb"]["msg_count"] += 1
-                print("USB sat:", data["satellites"], "fix:", data["fix"])
+                print("USB sat:", data["satellites"], "fix:", data["fix"], "hdop:", data['hdop'], "time:", data['time'])
             else:
                 state["usb"]["corrupt_count"] += 1
         else:
