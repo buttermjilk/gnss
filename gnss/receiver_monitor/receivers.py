@@ -22,7 +22,7 @@ state = {
 # read ethernet port data
 def read_eth():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect(("127.0.0.1", 10110))
+    sock.connect(("192.168.128.209", 10110))
     file = sock.makefile()
 
     while True:

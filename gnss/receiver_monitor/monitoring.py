@@ -5,7 +5,7 @@ from influx_writer import push_metrics
 #ultimately these would probably be read form a config file
 CHECK_INTERVAL = 3
 MIN_SATELLITES = 6
-DEGRADED_DIFF = 5 #this is just satellite difference [ETH_Receiver - USB_Receiver]
+DEGRADED_DIFF = 12 #this is just satellite difference [ETH_Receiver - USB_Receiver]
 
 def run_monitor():
     while True:
@@ -17,7 +17,7 @@ def run_monitor():
         if state["usb"]["last_time"] and now - state["usb"]["last_time"] > CHECK_INTERVAL:
             print("ALERT: USB receiver signal cutout")
 
-        elif usb["satellites"] < MIN_SATELLITES:
+        elif usb and usb["satellites"] < MIN_SATELLITES:
             print("ALERT: USB weak signal")
 
         elif eth and usb["satellites"] < eth["satellites"] - DEGRADED_DIFF:
@@ -26,4 +26,4 @@ def run_monitor():
         else:
             print(f"USB OK: sat={usb['satellites']}, fix={usb['fix']}")
          
-        push_metrics(state)
+        push_metrics(state, CHECK_INTERVAL)
