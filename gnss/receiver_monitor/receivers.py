@@ -6,10 +6,10 @@ from helpers.nmea_parser import parse_gga
 # shared state, this synchronizes messages from each source
 state = {
     "usb": {
-        "data": None,          # last parsed data
-        "last_time": None,     # last message timestamp
-        "msg_count": 0,        # messages received
-        "corrupt_count": 0     # messages that are corrupted / incomplete
+        "data": None,
+        "last_time": None,
+        "msg_count": 0,
+        "corrupt_count": 0
     },
     "eth": {
         "data": None,
@@ -31,19 +31,18 @@ def read_eth():
             continue
         line = line.strip()
 
-        if line.startswith("$GP"):
-            data = parse_gga(line)
-            if data:
+        state["eth"]["msg_count"] += 1
 
-                # update state
-                state["eth"]["data"] = data
-                state["eth"]["last_time"] = time.time()
-                state["eth"]["msg_count"] += 1
-                print("ETH sat:", data["satellites"], "fix:", data["fix"], "hdop:", data['hdop'], "time:", data['time'])
-            else:
-                state["eth"]["corrupt_count"] += 1
-        else:
+        if not line.startswith("$"):
             state["eth"]["corrupt_count"] += 1
+            continue
+
+        data = parse_gga(line)
+        if data:
+            state["eth"]["data"] = data
+            state["eth"]["last_time"] = time.time()
+            print("ETH sat:", data["satellites"], "fix:", data["fix"], "hdop:", data['hdop'], "time:", data['time'])
+
 
 # read usb port data
 def read_usb():
@@ -54,16 +53,14 @@ def read_usb():
             continue
         line = line.strip()
 
-        if line.startswith("$GP"):
-            data = parse_gga(line)
-            if data:
+        state["usb"]["msg_count"] += 1
 
-                # update state
-                state["usb"]["data"] = data
-                state["usb"]["last_time"] = time.time()
-                state["usb"]["msg_count"] += 1
-                print("USB sat:", data["satellites"], "fix:", data["fix"], "hdop:", data['hdop'], "time:", data['time'])
-            else:
-                state["usb"]["corrupt_count"] += 1
-        else:
+        if not line.startswith("$"):
             state["usb"]["corrupt_count"] += 1
+            continue
+
+        data = parse_gga(line)
+        if data:
+            state["usb"]["data"] = data
+            state["usb"]["last_time"] = time.time()
+            print("USB sat:", data["satellites"], "fix:", data["fix"], "hdop:", data['hdop'], "time:", data['time'])

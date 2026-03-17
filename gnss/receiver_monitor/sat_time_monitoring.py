@@ -3,7 +3,7 @@ from helpers.gnss_parser import parse_gnss_time
 
 # thresholds (can later move to config)
 MIN_SATELLITES = 3
-DEGRADED_DIFF = 12
+DEGRADED_DIFF = 8
 TIMEOUT = 3
 TIME_JUMP_THRESHOLD = 5
 
