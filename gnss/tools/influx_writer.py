@@ -13,6 +13,7 @@ write_api = client.write_api(write_options=SYNCHRONOUS)
 
 def push_metrics(state, interval=3):
     now = time.time()
+    points = []
 
     for r in ["usb", "eth"]:
         receiver = state[r]
@@ -39,7 +40,10 @@ def push_metrics(state, interval=3):
             .time(int(now * 1e9))
         )
 
-        write_api.write(bucket=BUCKET, org=ORG, record=point)
+        points.append(point)
 
         receiver["msg_count"] = 0
         receiver["corrupt_count"] = 0
+
+    if points:
+        write_api.write(bucket=BUCKET, org=ORG, record=points)
