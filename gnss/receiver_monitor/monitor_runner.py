@@ -30,4 +30,4 @@ def run_monitor():
         for alert in precision_alerts:
             print("PRECISION ALERT:", alert)
 
-        #push_metrics(state, CHECK_INTERVAL)
+        push_metrics(state, CHECK_INTERVAL)
