@@ -50,3 +50,24 @@ def push_metrics(state, interval=3):
 
     if points:
         write_api.write(bucket=BUCKET, org=ORG, record=points)
+
+
+#writes alerts
+def push_alerts(alerts, receiver="usb"):
+    if not alerts:
+        return
+
+    now = time.time()
+    points = []
+
+    for alert in alerts:
+        point = (
+            Point("gnss_alert")
+            .tag("receiver", receiver)
+            .field("message", alert)
+            .field("value", 1)
+            .time(int(now * 1e9))
+        )
+        points.append(point)
+
+    write_api.write(bucket=BUCKET, org=ORG, record=points)

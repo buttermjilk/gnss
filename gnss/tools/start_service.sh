@@ -4,6 +4,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR/.."
 
+
 echo "freeing up USB0 port"
 sudo fuser -k /dev/ttyUSB0 2>/dev/null || true
 
@@ -38,7 +39,7 @@ echo "docker containers started"
 
 echo "starting monitoring service"
 
-python3 -m receiver_monitor.main
+./venv/bin/python -m receiver_monitor.main
 
 sleep 2
 

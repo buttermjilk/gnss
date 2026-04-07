@@ -1,6 +1,6 @@
 import time
 from .receivers import state
-from tools.influx_writer import push_metrics
+from tools.influx_writer import push_metrics, push_alerts
 from .precision_monitoring import check_precision
 from .sat_time_monitoring import check_signal
 
@@ -13,21 +13,24 @@ def run_monitor():
 
         usb = state["usb"]["data"]
 
-        # signal monitoring
         signal_alerts = check_signal(state)
+        precision_alerts = check_precision(state)
 
-        if signal_alerts:
-            for alert in signal_alerts:
+        all_alerts = signal_alerts + precision_alerts
+
+        if all_alerts:
+            push_alerts(all_alerts, "usb")
+
+            for alert in all_alerts:
                 print("ALERT:", alert)
 
         else:
             if usb:
-                print(f"USB OK: sat={usb['satellites']}, fix={usb['fix']}, hdop={usb['hdop']}, time={usb['time']}")
-
-        # precision monitoring
-        precision_alerts = check_precision(state)
-
-        for alert in precision_alerts:
-            print("PRECISION ALERT:", alert)
+                print(
+                    f"USB OK: sat={usb['satellites']}, "
+                    f"fix={usb['fix']}, "
+                    f"hdop={usb['hdop']}, "
+                    f"time={usb['time']}"
+                )
 
         push_metrics(state, CHECK_INTERVAL)
