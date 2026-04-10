@@ -4,8 +4,6 @@ import datetime
 
 lat = None
 lon = None
-cog = None
-sog = None
 hdop = None
 date = None
 time = None

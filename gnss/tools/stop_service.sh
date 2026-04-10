@@ -20,13 +20,6 @@ sleep 4
 
 echo "docker containers stopped"
 
-echo "deactivating venv"
-if [ -n "$VIRTUAL_ENV" ]; then
-    deactivate
-fi
-
-echo "venv deactivated"
-
 
 
 echo "bringing CAN interfaces down"

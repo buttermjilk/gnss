@@ -14,6 +14,7 @@ BUCKET = "gnss_monitor"
 client = InfluxDBClient(url=INFLUX_URL, token=INFLUX_TOKEN, org=ORG)
 write_api = client.write_api(write_options=SYNCHRONOUS)
 
+
 def push_metrics(state, interval=3):
     now = time.time()
     points = []
@@ -45,14 +46,13 @@ def push_metrics(state, interval=3):
 
         points.append(point)
 
-        receiver["msg_count"] = 0
-        receiver["corrupt_count"] = 0
-
     if points:
-        write_api.write(bucket=BUCKET, org=ORG, record=points)
+        try:
+            write_api.write(bucket=BUCKET, org=ORG, record=points)
+        except Exception as e:
+            print("Influx metrics write failed:", e)
 
 
-#writes alerts
 def push_alerts(alerts, receiver="usb"):
     if not alerts:
         return
@@ -60,14 +60,17 @@ def push_alerts(alerts, receiver="usb"):
     now = time.time()
     points = []
 
-    for alert in alerts:
+    for i, alert in enumerate(alerts):
         point = (
             Point("gnss_alert")
             .tag("receiver", receiver)
-            .field("message", alert)
+            .tag("alert", alert)
             .field("value", 1)
-            .time(int(now * 1e9))
+            .time(int((now + i * 1e-6) * 1e9))
         )
         points.append(point)
 
-    write_api.write(bucket=BUCKET, org=ORG, record=points)
+    try:
+        write_api.write(bucket=BUCKET, org=ORG, record=points)
+    except Exception as e:
+        print("Influx alerts write failed:", e)

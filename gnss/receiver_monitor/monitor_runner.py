@@ -1,5 +1,6 @@
 import time
-from .receivers import state
+import copy
+from .receivers import state, state_lock
 from tools.influx_writer import push_metrics, push_alerts
 from .precision_monitoring import check_precision
 from .sat_time_monitoring import check_signal
@@ -11,10 +12,13 @@ def run_monitor():
     while True:
         time.sleep(CHECK_INTERVAL)
 
-        usb = state["usb"]["data"]
+        with state_lock:
+            snapshot = copy.deepcopy(state)
 
-        signal_alerts = check_signal(state)
-        precision_alerts = check_precision(state)
+        usb = snapshot["usb"]["data"]
+
+        signal_alerts = check_signal(snapshot)
+        precision_alerts = check_precision(snapshot)
 
         all_alerts = signal_alerts + precision_alerts
 
@@ -33,4 +37,4 @@ def run_monitor():
                     f"time={usb['time']}"
                 )
 
-        push_metrics(state, CHECK_INTERVAL)
+        push_metrics(snapshot, CHECK_INTERVAL)
