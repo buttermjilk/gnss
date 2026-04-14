@@ -58,7 +58,7 @@ def check_precision(state):
 
         if duration > DEGRADE_TIME and now - last_degrade_alert > ALERT_COOLDOWN:
             alerts.append(
-                f"USB precision degraded: HDOP {usb_hdop:.2f} for {duration:.1f}s"
+                f"USB precision degraded: HDOP: {usb_hdop:.2f} for {duration:.1f}s"
             )
             last_degrade_alert = now
     else:
@@ -88,7 +88,7 @@ def check_precision(state):
 
         if first > 0 and last > first * 1.5 and now - last_trend_alert > ALERT_COOLDOWN:
             alerts.append(
-                f"USB HDOP trend worsening ({first:.2f} -> {last:.2f})"
+                f"USB HDOP trend ({first:.2f} -> {last:.2f})"
             )
             last_trend_alert = now
 

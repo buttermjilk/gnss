@@ -4,13 +4,18 @@ from .receivers import state, state_lock
 from tools.influx_writer import push_metrics, push_alerts
 from .precision_monitoring import check_precision
 from .sat_time_monitoring import check_signal
+import os
+from dotenv import load_dotenv
 
-CHECK_INTERVAL = 3
+load_dotenv()
+
+INFLUX_CHECK_INTERVAL= int(os.getenv("INFLUX_CHECK_INTERVAL"))
+
 
 
 def run_monitor():
     while True:
-        time.sleep(CHECK_INTERVAL)
+        time.sleep(INFLUX_CHECK_INTERVAL)
 
         with state_lock:
             snapshot = copy.deepcopy(state)
@@ -37,4 +42,4 @@ def run_monitor():
                     f"time={usb['time']}"
                 )
 
-        push_metrics(snapshot, CHECK_INTERVAL)
+        push_metrics(snapshot, INFLUX_CHECK_INTERVAL)

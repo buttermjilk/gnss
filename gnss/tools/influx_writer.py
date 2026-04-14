@@ -15,7 +15,7 @@ client = InfluxDBClient(url=INFLUX_URL, token=INFLUX_TOKEN, org=ORG)
 write_api = client.write_api(write_options=SYNCHRONOUS)
 
 
-def push_metrics(state, interval=3):
+def push_metrics(state, interval):
     now = time.time()
     points = []
 
@@ -29,7 +29,6 @@ def push_metrics(state, interval=3):
         msg_count = receiver["msg_count"]
         corrupt_count = receiver["corrupt_count"]
 
-        msg_rate = msg_count / interval
         corrupt_ratio = corrupt_count / max(msg_count, 1)
 
         point = (
@@ -39,7 +38,6 @@ def push_metrics(state, interval=3):
             .field("fix", data["fix"])
             .field("hdop", data["hdop"])
             .field("time", data["time"])
-            .field("message_rate", msg_rate)
             .field("corrupt_ratio", corrupt_ratio)
             .time(int(now * 1e9))
         )
