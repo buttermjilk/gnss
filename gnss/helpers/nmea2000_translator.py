@@ -45,9 +45,9 @@ if __name__ == "__main__":
             date = fields["Date"]
             time = fields["Time"]
 
-        if lat and lon and cog is not None and sog is not None:
+        if lat and lon is not None:
             lat_str, lat_h = dd_to_nmea(lat, "lat")
             lon_str, lon_h = dd_to_nmea(lon, "lon")
 
-            body = f"GPRMC,,A,{lat_str},{lat_h},{lon_str},{lon_h},{sog:.2f},{cog:.1f},,"
+            body = f"GPRMC,,A,{lat_str},{lat_h},{lon_str},{lon_h},,"
             print(f"${body}*{checksum(body)}")

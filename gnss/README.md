@@ -2,7 +2,7 @@
 
 Orchestrator: Creates 2 extra threads, assigns them to read 1 source of GNSS data per thread. Uses main thread to run monitor loop. 
 
-Receivers: Uses libraries and a custom function to read and parse GNSS data and all its fields from USB and ETH source. Also uses a shared state sort of system, which syncs / matches the messages, so in comparison there is always the most recent ETH message for the most recent USB message. 
+Receivers: Uses libraries to read data straight from our USB receiver. For the other receiver we are tapping straight into the CAN-Bus and manually decoding packets and harvesting wanted information. This information gets reconstructed to NMEA0183 messages from the NMEA2000 data.
 
 
 Monitoring_runner: 
@@ -12,12 +12,16 @@ A loop which is the core of the program. It takes in messages from the receivers
 
 Sat-time_monitoring: 
 
-Uses a function with if- clauses to check for things like time jumps, satellite amount, signal timeout etc. This gets ran every message. 
+A detection script that monitors and classifies issues, checking for problems like time jumps, impossible movement, satellite amount, signal timeout etc.
 
  
 Precision_monitoring: 
 
-Uses a function with if- clauses to monitor HDOP metrics. Check for things like straight up HDOP degradation or degradation trends (hdop worsening bit by bit over time). 
+A detection script that monitors and classifies issues with HDOP. Check for things like straight up HDOP degradation or degradation trends.
+
+Helper_scripts:
+
+A collection of scripts related to parsing GGA messages, reconstructing NMEA0183 and decoding NMEA2000 messages.
 
  
 Influx_writer: 
