@@ -16,4 +16,4 @@ Raymarine RS150 + barebones USB GNSS receiver (Model unknown)
 
 12V / 7.0Ah Battery for powering the system 
 
-[ Additional components include custom wiring, NMEA2000 splitter + other miscellaoneus parts ]
+[ Additional components include custom wiring, NMEA2000 splitter + other miscellaneous parts ]
