@@ -4,7 +4,9 @@ The data from the USB port gets used as is with minimal processing, where the da
 The messages are then matched through a synced state cache and ran through different scripts containing anomaly detection logic.
 The data along with the possible detected alerts gets written to InfluxDB and then displayed on real-time Grafana dashboards.
 
-System components: 
+![Flowchart](flowchart.jpg)
+
+Physical system components:
 
 Raspberry Pi + CAN bus reader & NMEA 2000 HAT 
 
@@ -13,5 +15,3 @@ Raymarine RS150 + barebones USB GNSS receiver (Model unknown)
 12V / 7.0Ah Battery for powering the system 
 
 [ Additional components include custom wiring, NMEA2000 splitter + other miscellaoneus parts ]
-
-![Flowchart](flowchart.jpg)
