@@ -7,6 +7,26 @@ The messages are then matched through a synced state cache and ran through diffe
 The data along with the possible detected alerts gets written to InfluxDB and then displayed on real-time Grafana dashboards.
 
 
+Physical system components:
+
+Raspberry Pi + CAN bus reader & NMEA 2000 HAT
+
+Raymarine RS150 + barebones USB GNSS receiver (Model unknown) 
+
+12V / 7.0Ah Battery for powering the system  + Separate power source for Rasberry Pi
+
+[ Additional components include custom wiring, NMEA2000 splitter + other miscellaneous parts ]
+
+If you have the hardware side set up this is how you setup and start the software:
+
+1. Create your .env file and attach credentials (example .env file in codebase).
+2. Install requirements.txt
+3. Run the start_services.sh script which starts the docker containers among the main program and services.
+4. Log into localhost:8086 and get your influx token, paste this into the .env file.
+5. Create your influxdb bucket and your grafana dashboard.
+6. Now using the stop_script.sh and the start_script.sh again you should have a fully working system that takes in data from both sources, processed them, writes them to the database and ultimately displays the data.
+
+
 
 ![Flowchart](flowchart.jpg)
 
@@ -47,15 +67,5 @@ All of the microservices run in docker containers!
 
 ===========================================================================================================================================================================================================
 
-
-Physical system components:
-
-Raspberry Pi + CAN bus reader & NMEA 2000 HAT 
-
-Raymarine RS150 + barebones USB GNSS receiver (Model unknown) 
-
-12V / 7.0Ah Battery for powering the system 
-
-[ Additional components include custom wiring, NMEA2000 splitter + other miscellaneous parts ]
 
 
