@@ -6,6 +6,7 @@ The data from the USB port gets used as is with minimal processing, where the da
 The messages are then matched through a synced state cache and ran through different scripts containing anomaly detection logic.
 The data along with the possible detected alerts gets written to InfluxDB and then displayed on real-time Grafana dashboards.
 
+===========================================================================================================================================================================================================
 
 Physical system components:
 
@@ -17,6 +18,8 @@ Raymarine RS150 + barebones USB GNSS receiver (Model unknown)
 
 [ Additional components include custom wiring, NMEA2000 splitter + other miscellaneous parts ]
 
+===========================================================================================================================================================================================================
+
 If you have the hardware side set up this is how you setup and start the software:
 
 1. Create your .env file and attach credentials (example .env file in codebase).
@@ -26,6 +29,7 @@ If you have the hardware side set up this is how you setup and start the softwar
 5. Create your influxdb bucket and your grafana dashboard.
 6. Now using the stop_script.sh and the start_script.sh again you should have a fully working system that takes in data from both sources, processed them, writes them to the database and ultimately displays the data.
 
+===========================================================================================================================================================================================================
 
 
 ![Flowchart](flowchart.jpg)
@@ -63,9 +67,6 @@ Grafana dashboard:
 This pulls from our influxDB bucket and displays all the wanted info on a realtime dashboard.
 
 All of the microservices run in docker containers!
-
-
-===========================================================================================================================================================================================================
 
 
 
