@@ -21,8 +21,7 @@ Raymarine RS150 + barebones USB GNSS receiver (Model unknown)
 ![Flowchart](physical_infra.jpg)
 
 ==============================================================================================================
-
-If you have the hardware side set up this is how you setup and start the software:
+If you have the physical infra these are the software setup instructions:
 
 1. Create your .env file and attach credentials (example .env file in codebase).
 2. Install requirements.txt
