@@ -7,6 +7,7 @@ The messages are then matched through a synced state cache and ran through diffe
 The data along with the possible detected alerts gets written to InfluxDB and then displayed on real-time Grafana dashboards.
 
 ==============================================================================================================
+
 Physical system components:
 
 Raspberry Pi + CAN bus reader & NMEA 2000 HAT
