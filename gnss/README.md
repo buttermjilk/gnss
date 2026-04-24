@@ -6,7 +6,13 @@ The data from the USB port gets used as is with minimal processing, where the da
 The messages are then matched through a synced state cache and ran through different scripts containing anomaly detection logic.
 The data along with the possible detected alerts gets written to InfluxDB and then displayed on real-time Grafana dashboards.
 
+
+
 ![Flowchart](flowchart.jpg)
+
+
+
+===========================================================================================================================================================================================================
 
 Orchestrator: Creates 2 extra threads, assigns them to read 1 source of GNSS data per thread. Uses main thread to run monitor loop.
 
@@ -37,6 +43,9 @@ Grafana dashboard:
 This pulls from our influxDB bucket and displays all the wanted info on a realtime dashboard.
 
 All of the microservices run in docker containers!
+
+
+===========================================================================================================================================================================================================
 
 
 Physical system components:
