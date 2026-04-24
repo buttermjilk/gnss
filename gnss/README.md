@@ -7,7 +7,7 @@ The messages are then matched through a synced state cache and ran through diffe
 The data along with the possible detected alerts gets written to InfluxDB and then displayed on real-time Grafana dashboards.
 
 ===========================================================================================================================================================================================================
-![Flowchart](physical_infra.png)
+![Flowchart](physical_infra.jpg)
 
 Physical system components:
 
@@ -33,7 +33,7 @@ If you have the hardware side set up this is how you setup and start the softwar
 ===========================================================================================================================================================================================================
 
 
-![Flowchart](flowchart.jpg)
+![Flowchart](software_infra.jpg)
 
 
 
